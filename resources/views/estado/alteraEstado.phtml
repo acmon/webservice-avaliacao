@@ -14,20 +14,19 @@
 			<div class="col-md-8">
 				<div class="panel panel-default">
 					<div class="panel-body">
-						<form action="/estado/<?= $estado->est_id ?>/alterar" method="post">
-							
+						
+						<form action="/estado/<?= $estado->_id ?>/alterar" method="post">
 							<div class="form-group">
 								<label for="nome">Nome</label>
-								<input type="text" class="form-control" name="nome" id="nome" placeholder="Nome" value="<?= $estado->est_nome ?>">
+								<input type="text" class="form-control" name="nome" id="nome" placeholder="Nome" value="<?= $estado->nome ?>">
 							</div>
 							<div class="form-group">
 								<label for="sigla">Sigla</label>
-								<input type="text" class="form-control" name="sigla" id="sigla" placeholder="Sigla" value="<?= $estado->est_sigla ?>">
+								<input type="text" class="form-control" name="sigla" id="sigla" placeholder="Sigla" value="<?= $estado->sigla ?>">
 							</div>
-
-						  <button type="submit" class="btn btn-primary">Alterar</button>
-						
+						  <button type="submit" class="btn btn-primary">Alterar</button>	
 						</form>
+					
 					</div>
 				</div>
 			</div>

@@ -13,7 +13,7 @@ class EstadoAction extends Action {
 		try {
 			$query = new \MongoDB\Driver\Query([], ['sort' => ['nome' => 1]]);
 
-			$estados = $this->db->executeQuery("avaliacao.estados", $query);  
+			$estados = $this->db->executeQuery("avaliacao.estados", $query);
 			
 			$retorno = array();
 	
@@ -72,12 +72,11 @@ class EstadoAction extends Action {
 
 		$id = $request->getAttribute('id');
 
-		$estado = $this->db->prepare('SELECT est_id, est_nome, est_sigla FROM estados where est_id = ?');
-		$estado->execute(array($id));
+		$query = new \MongoDB\Driver\Query(['_id' => new \MongoDB\BSON\ObjectId($id)], ['limit' => 1]);
 
-		if ($estado->rowCount() == 1) {
-			$retorno['estado'] = $estado->fetch(\PDO::FETCH_OBJ);
-		}
+		$retorno = array();
+
+		$retorno['estado'] = $this->db->executeQuery("avaliacao.estados", $query)->toArray()[0];
 
 		return $this->view->render($response, 'estado/alteraEstado.phtml', $retorno);
 	}
@@ -85,18 +84,32 @@ class EstadoAction extends Action {
 	public function update($request, $response)
 	{
 		#TODO - validar alteração de estado (sigla e nome informados)
-		#- Updated at
-		$dados = $request->getParsedBody();
+		#- Updated at		
+		try {
+			$bulk = new \MongoDB\Driver\BulkWrite;
 
-		$id = $request->getAttribute('id');
-		$nome = filter_var($dados['nome'], FILTER_SANITIZE_STRING);
-		$sigla = filter_var($dados['sigla'], FILTER_SANITIZE_STRING);
+			$id = $request->getAttribute('id');
 
-		$cadastro = $this->db->prepare('UPDATE estados SET est_nome = ?, est_sigla = ? WHERE est_id = ?');
-		$cadastro->execute(array($nome, $sigla, $id));
+			$filtro = ['_id' => new \MongoDB\BSON\ObjectId($id)];
 
-		return $response->withRedirect('/estado');
+			$dados = $request->getParsedBody();
 
+			$nome = filter_var($dados['nome'], FILTER_SANITIZE_STRING);
+			$sigla = filter_var($dados['sigla'], FILTER_SANITIZE_STRING);
+
+			$doc = ['nome' => $nome, 'sigla' => $sigla];
+
+			$bulk->update($filtro, $doc, [‘multi’ => false, ‘upsert’ => false]);
+
+			$this->db->executeBulkWrite('avaliacao.estados', $bulk);
+			
+			return $response->withRedirect('/estado');
+
+		} catch (MongoDB\Driver\Exception\Exception $e) {
+     		
+     		throw new Exception("Não foi possível excluir o estado \n Detalhes: ".$e);
+
+		}
 	}
 
 	public function delete($request, $response)
@@ -116,8 +129,8 @@ class EstadoAction extends Action {
 			return $response->withRedirect('/estado');
 
 		} catch (MongoDB\Driver\Exception\Exception $e) {
-     		
-     		throw new Exception("Não foi possível excluir o estado \n Detalhes: ".$e);
+
+			throw new Exception("Não foi possível excluir o estado \n Detalhes: ".$e);
 
 		}
 	}
