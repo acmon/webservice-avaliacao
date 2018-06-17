@@ -63,7 +63,7 @@ class EstadoAction extends Action {
      		throw new Exception("Não foi possível cadastrar o estado \n Detalhes: ".$e);
 
 		}
-		
+
 	}
 
 	public function alterar($request, $response)
@@ -103,12 +103,23 @@ class EstadoAction extends Action {
 	{
 		#TODO - validar exclusão (recebeu id)
 		#- confirmação de exclusão
-		$id = $request->getAttribute('id');
+		try {
+    		$bulk = new \MongoDB\Driver\BulkWrite;    
 
-		$excluir = $this->db->prepare('DELETE from estados where est_id = ?');
-		$excluir->execute(array($id));
+			$id = $request->getAttribute('id');
 
-		return $response->withRedirect('/estado');
+			$filtro = ['_id' => new \MongoDB\BSON\ObjectId($id)];
+			$bulk->delete($filtro);
+
+			$this->db->executeBulkWrite('avaliacao.estados', $bulk);
+
+			return $response->withRedirect('/estado');
+
+		} catch (MongoDB\Driver\Exception\Exception $e) {
+     		
+     		throw new Exception("Não foi possível excluir o estado \n Detalhes: ".$e);
+
+		}
 	}
 
 }
