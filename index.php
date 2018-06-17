@@ -1,12 +1,12 @@
 <?php
 if (PHP_SAPI == 'cli-server') {
-    // To help the built-in PHP dev server, check if the request was actually for
-    // something which should probably be served as a static file
-    $url  = parse_url($_SERVER['REQUEST_URI']);
-    $file = __DIR__ . $url['path'];
-    if (is_file($file)) {
-        return false;
-    }
+	// To help the built-in PHP dev server, check if the request was actually for
+	// something which should probably be served as a static file
+	$url  = parse_url($_SERVER['REQUEST_URI']);
+	$file = __DIR__ . $url['path'];
+	if (is_file($file)) {
+		return false;
+	}
 }
 
 require 'vendor/autoload.php';
@@ -24,18 +24,23 @@ $container = $app->getContainer();
 
 $container['view'] = new \Slim\Views\PhpRenderer('resources/views/');
 
-$container['db'] = function ($c) {
-    
-    $db = $c['settings']['db'];
-    
-    $pdo = new PDO('mysql:host=' . $db['host'] . ';dbname=' . $db['dbname'], $db['user'], $db['pass']);
-
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-    
-    return $pdo;
-};
-
 require 'src/http/routes.php';
+
+$container['db'] = function ($c) {
+
+	try {
+
+		$dbSettings = $c['settings']['db'];
+
+	    $mongo = new \MongoDB\Driver\Manager($dbSettings['url']);
+
+	    return $mongo;
+
+	} catch (MongoDB\Driver\Exception\Exception $e) {
+	   
+	   throw new Exception("Não foi possível conectar com o banco de dados \n Detalhes: ".$e); 
+
+	}
+};
 
 $app->run();

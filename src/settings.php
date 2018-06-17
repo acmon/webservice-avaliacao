@@ -19,9 +19,7 @@ return [
         'displayErrorDetails' => true,
         'addContentLengthHeader' => false,
         'db' => [
-            'host'   => 'localhost',
-            'user'   => 'root',
-            'pass'   => '',
+            'url'   => 'mongodb://localhost:27017',
             'dbname' => 'avaliacao',
         ]
     ],

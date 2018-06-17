@@ -26,9 +26,9 @@
 							<tbody>
 								<?php if (isset($estados)): foreach ($estados as $estado): ?>
 								<tr>
-									<td><?= $estado->est_id ?></td>
-									<td><?= $estado->est_nome ?></td>
-									<td><?= $estado->est_sigla ?></td>
+									<td><?= $estado->_id ?></td>
+									<td><?= $estado->nome ?></td>
+									<td><?= $estado->sigla ?></td>
 									<td>
 										<a href="/estado/<?= $estado->est_id ?>/alterar" alt="alterar" class="btn btn-info">Editar</a>
 										<a href="/estado/<?= $estado->est_id ?>/excluir" alt="excluir" class="btn btn-danger">Excluir</a>

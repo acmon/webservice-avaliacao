@@ -8,18 +8,24 @@ class EstadoAction extends Action {
 
 	public function index($request, $response)
 	{
-		#TODO - filtrar
-		$estados = $this->db->prepare("SELECT est_id, est_nome, est_sigla FROM estados ORDER BY est_nome ASC");
+		//#TODO - filtrar e ordenar
+		//- isolar avaliacao.estados
+		try {
+			$query = new \MongoDB\Driver\Query([], ['sort' => ['nome' => 1]]);
 
-		$estados->execute();
+			$estados = $this->db->executeQuery("avaliacao.estados", $query);  
+			
+			$retorno = array();
+	
+			$retorno['estados'] = $estados;
 
-		$retorno = array();
+			return $this->view->render($response, 'estado/listaEstados.phtml', $retorno);	
 
-		if ($estados->rowCount() > 0) {
-			$retorno['estados'] = $estados->fetchAll(\PDO::FETCH_OBJ);
-		}
+		} catch (MongoDB\Driver\Exception\Exception $e) {
+			
+			throw new Exception("Não foi possível buscar os estados \n Detalhes: ".$e);
 
-		return $this->view->render($response, 'estado/listaEstados.phtml', $retorno);
+		}		
 	}
 
 	public function novo($request, $response)
@@ -33,18 +39,31 @@ class EstadoAction extends Action {
 	public function store($request, $response)
 	{
 		#TODO - validar cadastro de estado (sigla e nome informados)
-		#- created at
+		//- created at
+		//- isolar avaliacao.estados
 
 		$dados = $request->getParsedBody();
 
 		$nome = filter_var($dados['nome'], FILTER_SANITIZE_STRING);
 		$sigla = filter_var($dados['sigla'], FILTER_SANITIZE_STRING);
 
-		$cadastro = $this->db->prepare('INSERT INTO estados SET est_nome = ?, est_sigla = ?');
-		$cadastro->execute(array($nome, $sigla));
+		try {
+    		$bulk = new \MongoDB\Driver\BulkWrite;           
 
-		return $response->withRedirect('/estado');
+    		$doc = ['nome' => $nome, 'sigla' => $sigla];       
 
+		    $bulk->insert($doc);
+
+		    $this->db->executeBulkWrite('avaliacao.estados', $bulk);
+		    
+			return $response->withRedirect('/estado');
+
+		} catch (MongoDB\Driver\Exception\Exception $e) {
+     		
+     		throw new Exception("Não foi possível cadastrar o estado \n Detalhes: ".$e);
+
+		}
+		
 	}
 
 	public function alterar($request, $response)
