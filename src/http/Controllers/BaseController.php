@@ -1,8 +1,8 @@
 <?php
 
-namespace Src\Action;
+namespace Src\http\Controllers;
 
-class Action {
+class BaseController {
 
 	function __construct($container)
 	{

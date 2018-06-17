@@ -1,10 +1,10 @@
 <?php
 
-namespace Src\Action;
+namespace Src\Handler;
 
-use Src\Action\Action as Action;
+use Src\Handler\Handler as Handler;
 
-class HomeAction extends Action {
+class HomeHandler extends Handler {
 
 	public function index($request, $response)
 	{
