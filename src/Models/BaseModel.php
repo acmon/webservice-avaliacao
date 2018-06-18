@@ -91,7 +91,7 @@ class BaseModel {
 			$documento['criado_em'] = date("d/m/Y H:i:s");
 			$documento['atualizado_em'] = date("d/m/Y H:i:s");
 
-			$documento = $this->documentoParaUpper($documento);
+			$documento = $this->documentoParaLower($documento);
 
     		$bulk = new \MongoDB\Driver\BulkWrite;           
 
@@ -126,7 +126,7 @@ class BaseModel {
 		}
 	}
 
-	protected function documentoParaUpper($doc) {
+	protected function documentoParaLower($doc) {
 
 		$documento = [];
 
