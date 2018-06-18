@@ -7,9 +7,9 @@ $app->group('/api/v1', function(){
 	$this->group('/estado', function() {
 
 		$this->get('', 'Src\http\Controllers\Estado\Controller:index');
-		$this->post('', 'Src\http\Controllers\Estado\Controller:store');
-		$this->put('', 'Src\http\Controllers\Estado\Controller:update');
-		$this->delete('', 'Src\http\Controllers\Estado\Controller:delete');
+		$this->post('', 'Src\http\Controllers\Estado\Controller:store')->add(Src\http\Middleware\Estado\CadastroMiddleware::class);
+		$this->put('', 'Src\http\Controllers\Estado\Controller:update')->add(Src\http\Middleware\Estado\AlteracaoMiddleware::class);;
+		$this->delete('', 'Src\http\Controllers\Estado\Controller:delete')->add(Src\http\Middleware\Estado\ExclusaoMiddleware::class);;
 
 	});
 

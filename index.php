@@ -22,7 +22,7 @@ $container['db'] = function ($c) {
 
 	    return $mongo;
 
-	} catch (MongoDB\Driver\Exception\Exception $e) {
+	} catch (\MongoDB\Driver\Exception\Exception $e) {
 	   
 	   throw new Exception("Não foi possível conectar com o banco de dados \n Detalhes: ".$e); 
 

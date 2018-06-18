@@ -2,6 +2,8 @@
 
 namespace Src\Models;
 
+use Exception;
+
 class BaseModel {
 
 	protected $collection = '';
@@ -43,9 +45,9 @@ class BaseModel {
 
 			return $retorno;
 
-		} catch (MongoDB\Driver\Exception\Exception $e) {
+		} catch (\MongoDB\Driver\Exception\Exception $e) {
 			
-			throw new Exception("Não foi possível buscar \n Detalhes: ".$e);
+			throw new Exception($e);
 
 		}
 	}
@@ -88,15 +90,17 @@ class BaseModel {
 
 			return $this->db->executeQuery($this->dbCollection, $query)->toArray()[0];
 
-		} catch (MongoDB\Driver\Exception\Exception $e) {
+		} catch (\MongoDB\Driver\Exception\Exception $e) {
      		
-     		throw new Exception("Não foi possível carregar \n Detalhes: ".$e);
+     		throw new Exception($e);
 
 		}
 	}
 
 	public function cadastrar($documento)
 	{
+		$this->validarCadastro($documento);
+
 		try {
 			$documento['criado_em'] = date("d/m/Y H:i:s");
 			$documento['atualizado_em'] = date("d/m/Y H:i:s");
@@ -109,16 +113,21 @@ class BaseModel {
 
 		    return $this->db->executeBulkWrite($this->dbCollection, $bulk);
 
-		} catch (MongoDB\Driver\Exception\Exception $e) {
+		} catch (\MongoDB\Driver\Exception\Exception $e) {
      		
-     		throw new Exception("Não foi possível cadastrar. \n Detalhes: ".$e);
+     		throw new Exception();
 
 		}
 	}
 
+	protected function validarCadastro($dados) {
+		throw new Exception('Método obrigatório não implementado');
+	}
+
 	public function alterar($id, $dados)
 	{
-		#TODO - validar alteração de estado (sigla e nome informados, id informado e válido)
+		$this->validarAlteracao($dados);
+
 		try {
 			$filtro = ['_id' => new \MongoDB\BSON\ObjectId($id)];
 			$dados['atualizado_em'] = date("d/m/Y H:i:s");
@@ -131,11 +140,15 @@ class BaseModel {
 
 			return $this->db->executeBulkWrite($this->dbCollection, $bulk);
 
-		} catch (MongoDB\Driver\Exception\Exception $e) {
+		} catch (\MongoDB\Driver\Exception\Exception $e) {
      		
-     		throw new Exception("Não foi possível excluir. \n Detalhes: ".$e);
+     		throw new Exception($e);
 
 		}
+	}
+
+	protected function validarAlteracao($dados) {
+		throw new Exception('Método obrigatório não implementado');
 	}
 
 	private function documentoParaLower($doc) {
@@ -157,7 +170,6 @@ class BaseModel {
 
 	public function excluir($id)
 	{
-		#TODO - validar exclusão (recebeu id e se o id é válido)
 		try {
     		$bulk = new \MongoDB\Driver\BulkWrite;
 
@@ -167,11 +179,10 @@ class BaseModel {
 
 			return $this->db->executeBulkWrite($this->dbCollection, $bulk);
 
-		} catch (MongoDB\Driver\Exception\Exception $e) {
+		} catch (\MongoDB\Driver\Exception\Exception $e) {
 
-			throw new Exception("Não foi possível excluir \n Detalhes: ".$e);
+			throw new Exception($e);
 
 		}
 	}
-
 }
