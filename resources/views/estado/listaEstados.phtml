@@ -10,8 +10,46 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
+								
+				<form action="/estado" method="GET">
+					<fieldset class="form-group border p-2">
+						<legend>Filtro:</legend>
+						<div style="float: left">
+							<div class="form-group">
+								<label for="nome">id</label>
+								<input type="text" class="form-control-sm" name="_id" id="_id" placeholder="Id">
+							</div>
+							<div class="form-group">
+								<label for="nome">Nome</label>
+								<input type="text" class="form-control-sm" name="nome" id="nome" placeholder="Nome">
+							</div>
+							<div class="form-group">
+								<label for="sigla">Sigla</label>
+								<input type="text" class="form-control-sm text-uppercase" name="sigla" id="sigla" placeholder="Sigla" maxlength="2">
+							</div>
+							<div>
+								<button type="submit" class="btn btn-primary btn-sm">Buscar</button>
+								<button type="reset" class="btn btn-secundary btn-sm">Limpar</button>
+							</div>
+						</div>
+						<div style="float:right">
+							
+							<div class="form-group">
+								<label for="ordenacao">Ordenar por</label>
+								<select class="form-control" id="ordenacao" name="ordenacao">
+									<option value="nome">Nome</option>
+									<option value="sigla">Sigla</option>
+									<option value="criado_em">Data de Criação</option>
+									<option value="atualizado_em">Última atualização</option>
+								</select>
+							</div>
+
+						</div>
+					</fieldset>
+				</form>
+
 				<h2>Estados</h2>
-				<a href="/estado/cadastrar" alt="cadastrar" class="btn btn-success">Cadastrar</a>
+				<a href="/estado/cadastrar" alt="cadastrar" class="btn btn-success btn-sm">Cadastrar</a>
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<table class="table">
@@ -20,7 +58,7 @@
 									<th>#</th>
 									<th>Nome</th>
 									<th>Sigla</th>
-									<th>Criado Em</th>
+									<th>Data de Criação</th>
 									<th>Última Atualização</th>
 									<th>Ações</th>
 								</tr>
@@ -29,13 +67,13 @@
 								<?php if (isset($estados)): foreach ($estados as $estado): ?>
 								<tr>
 									<td><?= $estado->_id ?></td>
-									<td><?= $estado->nome ?></td>
+									<td class="text-capitalize"><?= $estado->nome ?></td>
 									<td class="text-uppercase"><?= $estado->sigla ?></td>
 									<td><?= $estado->criado_em ?></td>
 									<td><?= $estado->atualizado_em ?></td>
 									<td>
-										<a href="/estado/<?= $estado->_id ?>/alterar" alt="alterar" class="btn btn-info">Editar</a>
-										<a href="/estado/<?= $estado->_id ?>/excluir" alt="excluir" class="btn btn-danger">Excluir</a>
+										<a href="/estado/<?= $estado->_id ?>/alterar" alt="alterar" class="btn btn-info btn-sm">Editar</a>
+										<a href="/estado/<?= $estado->_id ?>/excluir" alt="excluir" class="btn btn-danger btn-sm">Excluir</a>
 									</td>
 								</tr>
 								<?php endforeach; endif; ?>

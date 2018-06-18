@@ -16,9 +16,9 @@ class BaseController {
 		throw new Exception('Método obrigatório');
 	}
 
-	public function buscar() 
+	public function buscar($filtro)
 	{
-		return $this->model->buscar();
+		return $this->model->buscar($filtro);
 	}
 
 	public function carregar($id)

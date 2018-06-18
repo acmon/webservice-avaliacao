@@ -16,8 +16,9 @@ class EstadoHandler extends Handler {
 
 	public function index($request, $response)
 	{
+		$filtro = $request->getParams();
 		//#TODO - filtrar e ordenar	
-		$retorno['estados'] = $this->estadoController->buscar();
+		$retorno['estados'] = $this->estadoController->buscar($filtro);
 
 		return $this->view->render($response, 'estado/listaEstados.phtml', $retorno);
 	}
