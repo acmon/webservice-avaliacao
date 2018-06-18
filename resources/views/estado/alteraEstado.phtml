@@ -16,6 +16,7 @@
 					<div class="panel-body">
 						
 						<form action="/estado/<?= $estado->_id ?>/alterar" method="post">
+							<input type="hidden" name="criado_em" value="<?= $estado->criado_em ?>">
 							<div class="form-group">
 								<label for="nome">Nome</label>
 								<input type="text" class="form-control" name="nome" id="nome" placeholder="Nome" value="<?= $estado->nome ?>">

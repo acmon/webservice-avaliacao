@@ -20,6 +20,8 @@
 									<th>#</th>
 									<th>Nome</th>
 									<th>Sigla</th>
+									<th>Criado Em</th>
+									<th>Última Atualização</th>
 									<th>Ações</th>
 								</tr>
 							</thead>
@@ -29,6 +31,8 @@
 									<td><?= $estado->_id ?></td>
 									<td><?= $estado->nome ?></td>
 									<td class="text-uppercase"><?= $estado->sigla ?></td>
+									<td><?= $estado->criado_em ?></td>
+									<td><?= $estado->atualizado_em ?></td>
 									<td>
 										<a href="/estado/<?= $estado->_id ?>/alterar" alt="alterar" class="btn btn-info">Editar</a>
 										<a href="/estado/<?= $estado->_id ?>/excluir" alt="excluir" class="btn btn-danger">Excluir</a>

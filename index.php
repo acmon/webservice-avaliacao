@@ -17,7 +17,7 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 // Instantiate the app
-$settings = require __DIR__ . '/src/settings.php';
+$settings = require __DIR__ . '/config/settings.php';
 $app = new \Slim\App($settings);
 
 $container = $app->getContainer();

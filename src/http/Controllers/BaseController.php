@@ -7,13 +7,39 @@ class BaseController {
 	function __construct($container)
 	{
 		$this->container = $container;
+
+		$this->model = $this->definirModel();
 	}
 
-	function __get($property)
+	public function definirModel()
 	{
-		if($this->container->{$property}) {
-			return $this->container->{$property};
-		}
+		throw new Exception('Método obrigatório');
+	}
+
+	public function buscar() 
+	{
+		return $this->model->buscar();
+	}
+
+	public function carregar($id)
+	{
+		return $this->model->carregar($id);
+	}
+
+	public function cadastrar($dados)
+	{
+		return $this->model->cadastrar($dados);
+	}
+
+	public function alterar($dados)
+	{
+		return $this->model->alterar($dados);
+	}
+
+	public function excluir($id)
+	{
+		return $this->model->excluir($id);
 	}
 
 }
+	
