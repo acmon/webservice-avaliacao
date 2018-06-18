@@ -1,17 +1,26 @@
 <?php
+use \Psr\Http\Message\ServerRequestInterface as Request;
+use \Psr\Http\Message\ResponseInterface as Response;
 
-$app->get('/', 'Src\Handler\HomeHandler:index');
+$app->group('/api/v1', function(){
 
-$app->group('/estado', function() {
+	$this->group('/estado', function() {
 
-	$this->get('', 'Src\Handler\Estado\EstadoHandler:index');
+		$this->get('', 'Src\http\Controllers\Estado\Controller:index');
+		$this->post('', 'Src\http\Controllers\Estado\Controller:store');
+		$this->put('', 'Src\http\Controllers\Estado\Controller:update');
+		$this->delete('', 'Src\http\Controllers\Estado\Controller:delete');
 
-	$this->get('/cadastrar', 'Src\Handler\Estado\EstadoHandler:novo');
-	$this->post('/cadastrar', 'Src\Handler\Estado\EstadoHandler:store');
-	
-	$this->get('/{id}/alterar', 'Src\Handler\Estado\EstadoHandler:alterar');
-	$this->post('/{id}/alterar', 'Src\Handler\Estado\EstadoHandler:update');
-	
-	$this->get('/{id}/excluir', 'Src\Handler\Estado\EstadoHandler:delete');
+	});
+
+	$this->group('/cidade', function() {
+
+		$this->get('', 'Src\http\Controllers\Cidade\Controller:index');
+		$this->post('', 'Src\http\Controllers\Cidade\Controller:store');
+		$this->put('', 'Src\http\Controllers\Cidade\Controller:update');
+		$this->delete('', 'Src\http\Controllers\Cidade\Controller:delete');
+
+	});
 
 });
+

@@ -33,7 +33,13 @@ class BaseModel {
 
 		try {
 			$query = new \MongoDB\Driver\Query($filtro, ['sort' => [$ordenacao => 1]]);
-			$retorno = $this->db->executeQuery($this->dbCollection, $query);
+			$itensBusca = $this->db->executeQuery($this->dbCollection, $query);
+
+			$retorno = [];
+
+			foreach ($itensBusca as $item) {
+				array_push($retorno, $item);
+			}
 
 			return $retorno;
 
@@ -44,14 +50,18 @@ class BaseModel {
 		}
 	}
 
-	protected function definirordenacao ($filtroRaw)
+	protected function definirOrdenacao ($filtroRaw)
 	{
-		$filtroRaw['ordenacao'] ? $ordenacao = $filtroRaw['ordenacao'] : $ordenacao = 'nome';
+		if($filtroRaw['ordenacao']){
+			$ordenacao = $filtroRaw['ordenacao'];
+		} else {
+			$ordenacao = 'nome';
+		}
 
 		return $ordenacao;
 	}
 
-	protected function montarFiltroBusca ($filtroRaw)
+	private function montarFiltroBusca ($filtroRaw)
 	{
 		$filtro = [];
 
@@ -59,7 +69,7 @@ class BaseModel {
 			
 			if($value[$key] !== '' && $key !== 'ordenacao') {
 
-				if ($key === "_id") {
+				if ($key === "id") {
 					$filtro[$key] = new \MongoDB\BSON\ObjectId($value);
 				} else {
 					$filtro[$key] = new \MongoDB\BSON\Regex($value,'i');
@@ -106,12 +116,14 @@ class BaseModel {
 		}
 	}
 
-	public function alterar($id, $documento)
+	public function alterar($id, $dados)
 	{
-		#TODO - validar alteração de estado (sigla e nome informados)
+		#TODO - validar alteração de estado (sigla e nome informados, id informado e válido)
 		try {
 			$filtro = ['_id' => new \MongoDB\BSON\ObjectId($id)];
-			$documento['atualizado_em'] = date("d/m/Y H:i:s");
+			$dados['atualizado_em'] = date("d/m/Y H:i:s");
+
+			$documento['$set'] = $dados;
 
 			$bulk = new \MongoDB\Driver\BulkWrite;
 
@@ -126,13 +138,13 @@ class BaseModel {
 		}
 	}
 
-	protected function documentoParaLower($doc) {
+	private function documentoParaLower($doc) {
 
 		$documento = [];
 
 		foreach ($doc as $key => $value) {
 			
-			if($key !== "_id") {
+			if($key !== "id") {
 
 				$documento[$key] = strtolower($value);
 
@@ -145,12 +157,12 @@ class BaseModel {
 
 	public function excluir($id)
 	{
-		#TODO - validar exclusão (recebeu id)
-		#- confirmação de exclusão
+		#TODO - validar exclusão (recebeu id e se o id é válido)
 		try {
     		$bulk = new \MongoDB\Driver\BulkWrite;
 
 			$filtro = ['_id' => new \MongoDB\BSON\ObjectId($id)];
+
 			$bulk->delete($filtro);
 
 			return $this->db->executeBulkWrite($this->dbCollection, $bulk);

@@ -26,14 +26,13 @@ class Estado extends BaseModel {
 
 	public function alterar($dados)
 	{
-		#TODO - validar alteração de estado (sigla e nome informados)
+		#TODO - validar alteração de estado (id, sigla e nome informados)
 		$nome = filter_var($dados['nome'], FILTER_SANITIZE_STRING);
 		$sigla = filter_var($dados['sigla'], FILTER_SANITIZE_STRING);
-		$criado_em = filter_var($dados['criado_em'], FILTER_SANITIZE_STRING);
+		
+		$estado = ['nome' => $nome, 'sigla' => $sigla];
 
-		$documento = ['nome' => $nome, 'sigla' => $sigla, 'criado_em' => $criado_em];
-
-		$retorno = parent::alterar($dados['id'], $documento);
+		$retorno = parent::alterar($dados['id'], $estado);
 
 		return $retorno;
 	}
