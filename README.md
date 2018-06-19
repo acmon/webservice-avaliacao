@@ -2,7 +2,7 @@
 ## Configuração da api
 Para acessar os serviços da api, é necessário observar se o endereço do mongo está configurado corretamente. Você pode verificar através do arquivo de configuração (config/settings.php).
 
-Nele, você vai encontrar o objeto que recebe o endereço do banco ('url') e o objeto que nomeia o database 'name'.
+Nele, você vai encontrar o objeto que recebe o endereço do banco ('url') e o objeto que nomeia o database ('name').
 
 ## Endpoints
 
