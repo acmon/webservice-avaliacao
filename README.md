@@ -24,7 +24,7 @@ Lista os estados cadastrados na base estados.
   
 * 'id':
   * Descrição: filtra a busca pelo identificador único do registro
-  * Valor: MongoDB\BSON\ObjectId
+  * Valor: string com o identificador único do estado a ser buscado
   
 * 'sigla':
   * Descrição: filtra a busca pela sigla (abreviação) do estado
@@ -73,7 +73,7 @@ Exemplo:
 
 * 'id':
   * Descrição: Identificador único do registro a ser alterado na base estados
-  * Valor: MongoDB\BSON\ObjectId
+  * Valor: string com o identificador único do estado a ser alterado
 
 * 'nome':
   * Descrição: Novo nome do estado
@@ -96,7 +96,7 @@ Exemplo:
 
 * 'id':
   * Descrição: Identificador único do registro a ser excluído na base estados
-  * Valor: MongoDB\BSON\ObjectId
+  * Valor: string com o identificador único do estado a ser excluído
   
 
 ### Cidades
@@ -117,11 +117,11 @@ Lista as cidades cadastradas na base cidades.
   
 * 'id':
   * Descrição: filtra a busca pelo identificador único do registro
-  * Valor: MongoDB\BSON\ObjectId
+  * Valor: string com o identificador único da cidade a ser buscada
   
 * 'id_estado':
   * Descrição: filtra a busca pelo identificador único do estado
-  * Valor: MongoDB\BSON\ObjectId
+  * Valor: string com o identificador único do estado que a cidade faz referência
 
 * 'criado_em':
   * Descrição: filtra a busca pela data ou hora de criação do registro
@@ -149,7 +149,7 @@ Exemplo:
 
 * 'id_estado':
   * Descrição: Identificador único do estado em que a cidade faz parte
-  * Valor: MongoDB\BSON\ObjectId
+  * Valor: string com o identificador único do estado referente a cidade a ser cadastrada
 
 #### [put] api/v1/cidade
 
@@ -166,7 +166,7 @@ Exemplo:
 
 * 'id':
   * Descrição: Identificador único do registro a ser alterado na base cidades
-  * Valor: MongoDB\BSON\ObjectId
+  * Valor: string com o identificador único da cidade a ser alterada
 
 * 'nome':
   * Descrição: Novo nome da cidade
@@ -174,7 +174,7 @@ Exemplo:
 
 * 'id_estado':
   * Descrição: Novo identificador único do estado eque a cidade faz parte
-  * Valor: MongoDB\BSON\ObjectId
+  * Valor: string com o identificador único do estado em que a cidade faz referência
 
 #### [delete] api/v1/cidade
 
@@ -189,4 +189,4 @@ Exemplo:
 
 * 'id':
   * Descrição: Identificador único do registro a ser excluído na base cidades
-  * Valor: MongoDB\BSON\ObjectId
+  * Valor: string com o identificador único da cidade a ser excluída
