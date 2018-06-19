@@ -1,32 +1,167 @@
-# Slim Framework 3 Skeleton Application
-
-Use this skeleton application to quickly setup and start working on a new Slim Framework 3 application. This application uses the latest Slim 3 with the PHP-View template renderer. It also uses the Monolog logger.
-
-This skeleton application was built for Composer. This makes setting up a new Slim Framework application quick and easy.
-
-## Install the Application
-
-Run this command from the directory in which you want to install your new Slim Framework application.
-
-    php composer.phar create-project slim/slim-skeleton [my-app-name]
-
-Replace `[my-app-name]` with the desired directory name for your new application. You'll want to:
-
-* Point your virtual host document root to your new application's `public/` directory.
-* Ensure `logs/` is web writeable.
-
-To run the application in development, you can run these commands 
-
-	cd [my-app-name]
-	php composer.phar start
-
-Run this command in the application directory to run the test suite
-
-	php composer.phar test
-
-That's it! Now go build something cool.
-
-
-
-----------------
-como instalar mongo
+openapi: "3.0.0"
+info:
+  title: Simple API overview
+  version: v2
+paths:
+  /:
+    get:
+      operationId: listVersionsv2
+      summary: List API versions
+      responses:
+        '200':
+          description: |-
+            200 response
+          content:
+            application/json:
+              examples: 
+                foo:
+                  value: {
+                    "versions": [
+                        {
+                            "status": "CURRENT",
+                            "updated": "2011-01-21T11:33:21Z",
+                            "id": "v2.0",
+                            "links": [
+                                {
+                                    "href": "http://127.0.0.1:8774/v2/",
+                                    "rel": "self"
+                                }
+                            ]
+                        },
+                        {
+                            "status": "EXPERIMENTAL",
+                            "updated": "2013-07-23T11:33:21Z",
+                            "id": "v3.0",
+                            "links": [
+                                {
+                                    "href": "http://127.0.0.1:8774/v3/",
+                                    "rel": "self"
+                                }
+                            ]
+                        }
+                    ]
+                 }
+        '300':
+          description: |-
+            300 response
+          content:
+            application/json: 
+              examples: 
+                foo:
+                  value: |
+                   {
+                    "versions": [
+                          {
+                            "status": "CURRENT",
+                            "updated": "2011-01-21T11:33:21Z",
+                            "id": "v2.0",
+                            "links": [
+                                {
+                                    "href": "http://127.0.0.1:8774/v2/",
+                                    "rel": "self"
+                                }
+                            ]
+                        },
+                        {
+                            "status": "EXPERIMENTAL",
+                            "updated": "2013-07-23T11:33:21Z",
+                            "id": "v3.0",
+                            "links": [
+                                {
+                                    "href": "http://127.0.0.1:8774/v3/",
+                                    "rel": "self"
+                                }
+                            ]
+                        }
+                    ]
+                   }
+  /v2:
+    get:
+      operationId: getVersionDetailsv2
+      summary: Show API version details
+      responses:
+        '200':
+          description: |-
+            200 response
+          content:
+            application/json: 
+              examples:
+                foo:
+                  value: {
+                    "version": {
+                      "status": "CURRENT",
+                      "updated": "2011-01-21T11:33:21Z",
+                      "media-types": [
+                          {
+                              "base": "application/xml",
+                              "type": "application/vnd.openstack.compute+xml;version=2"
+                          },
+                          {
+                              "base": "application/json",
+                              "type": "application/vnd.openstack.compute+json;version=2"
+                          }
+                      ],
+                      "id": "v2.0",
+                      "links": [
+                          {
+                              "href": "http://127.0.0.1:8774/v2/",
+                              "rel": "self"
+                          },
+                          {
+                              "href": "http://docs.openstack.org/api/openstack-compute/2/os-compute-devguide-2.pdf",
+                              "type": "application/pdf",
+                              "rel": "describedby"
+                          },
+                          {
+                              "href": "http://docs.openstack.org/api/openstack-compute/2/wadl/os-compute-2.wadl",
+                              "type": "application/vnd.sun.wadl+xml",
+                              "rel": "describedby"
+                          },
+                          {
+                            "href": "http://docs.openstack.org/api/openstack-compute/2/wadl/os-compute-2.wadl",
+                            "type": "application/vnd.sun.wadl+xml",
+                            "rel": "describedby"
+                          }
+                      ]
+                    }
+                  }
+        '203':
+          description: |-
+            203 response
+          content:
+            application/json: 
+              examples:
+                foo:
+                  value: {
+                    "version": {
+                      "status": "CURRENT",
+                      "updated": "2011-01-21T11:33:21Z",
+                      "media-types": [
+                          {
+                              "base": "application/xml",
+                              "type": "application/vnd.openstack.compute+xml;version=2"
+                          },
+                          {
+                              "base": "application/json",
+                              "type": "application/vnd.openstack.compute+json;version=2"
+                          }
+                      ],
+                      "id": "v2.0",
+                      "links": [
+                          {
+                              "href": "http://23.253.228.211:8774/v2/",
+                              "rel": "self"
+                          },
+                          {
+                              "href": "http://docs.openstack.org/api/openstack-compute/2/os-compute-devguide-2.pdf",
+                              "type": "application/pdf",
+                              "rel": "describedby"
+                          },
+                          {
+                              "href": "http://docs.openstack.org/api/openstack-compute/2/wadl/os-compute-2.wadl",
+                              "type": "application/vnd.sun.wadl+xml",
+                              "rel": "describedby"
+                          }
+                      ]
+                    }
+                  }
