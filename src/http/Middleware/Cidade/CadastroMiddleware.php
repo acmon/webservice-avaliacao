@@ -22,5 +22,4 @@ class CadastroMiddleware {
 
 		return $response;
 	}
-
 }

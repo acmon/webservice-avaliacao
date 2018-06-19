@@ -7,10 +7,9 @@ use Src\Models\Cidade\Cidade as Cidade;
 
 class Controller extends BaseController {
 
-	public function definirModel() {
-
+	public function definirModel() 
+	{
 		return new Cidade($this->container);
-
 	}
 
 	public function index($request, $response)
@@ -32,6 +31,4 @@ class Controller extends BaseController {
 	{
 		return parent::excluir($request, $response);
 	}
-
-
 }

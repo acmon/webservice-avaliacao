@@ -17,5 +17,4 @@ class ExclusaoMiddleware {
 
 		return $response;
 	}
-
 }

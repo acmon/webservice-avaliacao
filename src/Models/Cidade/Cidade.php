@@ -8,12 +8,12 @@ use Exception;
 
 class Cidade extends BaseModel {
 
-	public function definirCollection()
+	protected function definirCollection()
 	{
 		return 'cidades';
 	}
 
-	public function definirIdentificadoresExternos()
+	protected function definirIdentificadoresExternos()
 	{
 		return ['id_estado'];
 	}
@@ -28,7 +28,7 @@ class Cidade extends BaseModel {
 
 		$retorno = parent::cadastrar($documento);
 
-	    return $retorno;
+		return $retorno;
 	}
 
 	public function alterar($dados)

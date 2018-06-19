@@ -21,6 +21,4 @@ $app->group('/api/v1', function(){
 		$this->delete('', 'Src\http\Controllers\Cidade\Controller:delete')->add(Src\http\Middleware\Cidade\ExclusaoMiddleware::class);
 
 	});
-
 });
-

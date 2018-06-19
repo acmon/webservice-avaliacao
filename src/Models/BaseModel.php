@@ -25,12 +25,12 @@ class BaseModel {
 		}
 	}
 
-	public function definirCollection()
+	protected function definirCollection()
 	{
 		throw new Exception('Método obrigatório');
 	}
 
-	public function definirIdentificadoresExternos()
+	protected function definirIdentificadoresExternos()
 	{
 		return [];
 	}
@@ -90,7 +90,6 @@ class BaseModel {
 
 					$filtro[$key] = new \MongoDB\BSON\Regex($value,'i');
 				}
-
 			}
 		}
 
@@ -105,8 +104,8 @@ class BaseModel {
 			return $this->db->executeQuery($this->dbCollection, $query)->toArray()[0];
 
 		} catch (\MongoDB\Driver\Exception\Exception $e) {
-     		
-     		throw new Exception($e->getMessage());
+			
+			throw new Exception($e->getMessage());
 
 		}
 	}
@@ -119,15 +118,15 @@ class BaseModel {
 
 			$documento = $this->documentoParaLower($documento);
 
-    		$bulk = new \MongoDB\Driver\BulkWrite;           
+			$bulk = new \MongoDB\Driver\BulkWrite;           
 
-		    $bulk->insert($documento);
+			$bulk->insert($documento);
 
-		    return $this->db->executeBulkWrite($this->dbCollection, $bulk);
+			return $this->db->executeBulkWrite($this->dbCollection, $bulk);
 
 		} catch (\MongoDB\Driver\Exception\Exception $e) {
-     		
-     		throw new Exception($e->getMessage());
+			
+			throw new Exception($e->getMessage());
 
 		}
 	}
@@ -142,7 +141,6 @@ class BaseModel {
 
 			$documento['$set'] = $dados;
 
-
 			$bulk = new \MongoDB\Driver\BulkWrite;
 
 			$bulk->update($filtro, $documento, ['multi' => false, 'upsert' => false]);
@@ -156,8 +154,8 @@ class BaseModel {
 			return $result;
 
 		} catch (\MongoDB\Driver\Exception\Exception $e) {
-     		
-     		throw new Exception($e->getMessage());
+			
+			throw new Exception($e->getMessage());
 
 		}
 	}

@@ -27,6 +27,7 @@ class BaseController {
 			$retorno = $this->model->buscar($filtro);
 
 			return $response->withJson($retorno, 200, JSON_UNESCAPED_UNICODE);
+
 		} catch (Exception $e) {
 			return $response->withStatus(400)->write("Não foi possível realizar a busca. \n Detalhes: ".$e->getMessage());
 		}
@@ -37,6 +38,7 @@ class BaseController {
 		try
 		{
 			return $this->model->carregar($id);
+
 		} catch (Exception $e) {
 			return $response->withStatus(400)->write("Não foi possível carregar. \n Detalhes: ".$e->getMessage());
 		}
@@ -53,6 +55,7 @@ class BaseController {
 			return $response->withJson([
 				"msg" => "Cadastro realizado com sucesso"
 			]);
+			
 		} catch (Exception $e) {
 			return $response->withStatus(400)->write("Não foi possível realizar o cadastro. \n Detalhes: ".$e->getMessage());
 		}
@@ -96,4 +99,3 @@ class BaseController {
 	}
 
 }
-	

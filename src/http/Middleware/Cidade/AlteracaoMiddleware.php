@@ -22,5 +22,4 @@ class AlteracaoMiddleware {
 
 		return $response;
 	}
-
 }

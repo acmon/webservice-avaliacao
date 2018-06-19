@@ -7,10 +7,9 @@ use Src\Models\Estado\Estado as Estado;
 
 class Controller extends BaseController {
 
-	public function definirModel() {
-
+	public function definirModel() 
+	{
 		return new Estado($this->container);
-
 	}
 
 	public function index($request, $response)
@@ -32,5 +31,4 @@ class Controller extends BaseController {
 	{
 		return parent::excluir($request, $response);
 	}
-
 }

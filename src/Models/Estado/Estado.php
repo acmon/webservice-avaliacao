@@ -25,7 +25,7 @@ class Estado extends BaseModel {
 
 		$retorno = parent::cadastrar($documento);
 
-	    return $retorno;
+		return $retorno;
 	}
 
 	protected function validarCadastro($dados) {
