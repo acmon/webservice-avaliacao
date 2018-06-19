@@ -138,13 +138,22 @@ class BaseModel {
 			$filtro = ['_id' => new \MongoDB\BSON\ObjectId($id)];
 			$dados['atualizado_em'] = date("d/m/Y H:i:s");
 
+			$dados = $this->documentoParaLower($dados);
+
 			$documento['$set'] = $dados;
+
 
 			$bulk = new \MongoDB\Driver\BulkWrite;
 
 			$bulk->update($filtro, $documento, ['multi' => false, 'upsert' => false]);
 
-			return $this->db->executeBulkWrite($this->dbCollection, $bulk);
+			$result = $this->db->executeBulkWrite($this->dbCollection, $bulk);
+
+			if($result->getModifiedCount() == 0) {
+				throw new Exception("O id informado não correspondeu a nenhum item cadastrado");
+			}
+
+			return $result;
 
 		} catch (\MongoDB\Driver\Exception\Exception $e) {
      		
@@ -158,8 +167,12 @@ class BaseModel {
 		$documento = [];
 
 		foreach ($doc as $key => $value) {
+
+			if (in_array($key, $this->identificadoresExternos)) {
+
+				$documento[$key] = $value;
 			
-			if($key !== "id") {
+			} else if($key !== "id") {
 
 				$documento[$key] = strtolower($value);
 
@@ -173,13 +186,19 @@ class BaseModel {
 	public function excluir($id)
 	{
 		try {
-    		$bulk = new \MongoDB\Driver\BulkWrite;
+			$bulk = new \MongoDB\Driver\BulkWrite;
 
 			$filtro = ['_id' => new \MongoDB\BSON\ObjectId($id)];
 
 			$bulk->delete($filtro);
 
-			return $this->db->executeBulkWrite($this->dbCollection, $bulk);
+			$result = $this->db->executeBulkWrite($this->dbCollection, $bulk);
+
+			if($result->getDeletedCount() == 0) {
+				throw new Exception("O id informado não correspondeu a nenhum item cadastrado");
+			}
+
+			return $result;
 
 		} catch (\MongoDB\Driver\Exception\Exception $e) {
 
