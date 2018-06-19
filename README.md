@@ -1,34 +1,192 @@
-# Slim Framework 3 Skeleton Application
+# Webservice-avaliação
+## Configuração da api
+Para acessar os endereços da api, é necessário observar se o endereço do mongo está configurado corretamente. Você pode verificar através do arquivo de configuração (config/settings.php).
 
-Use this skeleton application to quickly setup and start working on a new Slim Framework 3 application. This application uses the latest Slim 3 with the PHP-View template renderer. It also uses the Monolog logger.
+Nele, você vai encontrar o objeto que recebe o endereço do banco ('url') e o objeto que nomeia o database 'name'.
 
-This skeleton application was built for Composer. This makes setting up a new Slim Framework application quick and easy.
+## Endpoints
 
-## Install the Application
+### Estados
 
-Run this command from the directory in which you want to install your new Slim Framework application.
+#### [get] api/v1/estado
 
-    php composer.phar create-project slim/slim-skeleton [my-app-name]
+##### DESCRIÇÃO
+Lista os estados cadastrados na base estados.
 
-Replace `[my-app-name]` with the desired directory name for your new application. You'll want to:
+##### PARAMS
+* 'ordenacao': 
+  * Descrição: parâmetro utilizado para ordenar a lista
+  * valor: 'id', 'nome', 'sigla', 'criado_em', 'atualizado_em'
 
-* Point your virtual host document root to your new application's `public/` directory.
-* Ensure `logs/` is web writeable.
+* 'nome':
+  * Descrição: filtra a busca pelo nome informado
+  * Valor: string de nome
+  
+* 'id':
+  * Descrição: filtra a busca pelo identificador único do registro
+  * Valor: MongoDB\BSON\ObjectId
+  
+* 'sigla':
+  * Descrição: filtra a busca pela sigla (abreviação) do estado
+  * Valor: string de sigla
 
-To run the application in development, you can run these commands 
+* 'criado_em':
+  * Descrição: filtra a busca pela data ou hora de criação do registro
+  * Valor: string com a data e/ou hora
 
-	cd [my-app-name]
-	php composer.phar start
+* 'atualizado_em':
+  * Descrição: filtra a busca pela data ou hora de última atualização do registro
+  * Valor: string com a data e/ou hora
 
-Run this command in the application directory to run the test suite
+#### [post] api/v1/estado
 
-	php composer.phar test
+##### DESCRIÇÃO
+Cadastra um estado na base estados
 
-That's it! Now go build something cool.
+##### BODY
+Exemplo:
+{
+	"nome" : "Rio de Janeiro",
+	"sigla": "RJ"
+}
 
+* 'nome':
+  * Descrição: Nome do estado a ser cadastrado
+  * Valor: string com o nome do estado
 
+* 'sigla':
+  * Descrição: Sigla do estado a ser cadastrado
+  * Valor: string com a sigla do estado
 
-----------------
-como instalar mongo
+#### [put] api/v1/estado
 
-configurar aplicação para conectar ao mongo
+##### DESCRIÇÃO
+Altera um estado na base estados
+
+##### BODY
+Exemplo:
+{
+	"id": "5b2861cc7a39a90cc63f79b5",
+	"nome" : "São Paulo",
+	"sigla": "SP"
+}
+
+* 'id':
+  * Descrição: Identificador único do registro a ser alterado na base estados
+  * Valor: MongoDB\BSON\ObjectId
+
+* 'nome':
+  * Descrição: Novo nome do estado
+  * Valor: string com o novo nome do estado
+
+* 'sigla':
+  * Descrição: Nova sigla do estado
+  * Valor: string com a nova sigla do estado
+
+#### [delete] api/v1/estado
+
+##### DESCRIÇÃO
+Exclui um estado na base estados
+
+##### BODY
+Exemplo:
+{
+	"id": "5b271d697a39a90f69314b14"
+}
+
+* 'id':
+  * Descrição: Identificador único do registro a ser excluído na base estados
+  * Valor: MongoDB\BSON\ObjectId
+  
+
+### Cidades
+
+#### [get] api/v1/cidade
+
+##### DESCRIÇÃO
+Lista as cidades cadastradas na base cidades.
+
+##### PARAMS
+* 'ordenacao': 
+  * Descrição: parâmetro utilizado para ordenar a lista
+  * valor: 'id', 'nome', 'id_estado', 'criado_em', 'atualizado_em'
+
+* 'nome':
+  * Descrição: filtra a busca pelo nome informado
+  * Valor: string de nome
+  
+* 'id':
+  * Descrição: filtra a busca pelo identificador único do registro
+  * Valor: MongoDB\BSON\ObjectId
+  
+* 'id_estado':
+  * Descrição: filtra a busca pelo identificador único do estado
+  * Valor: MongoDB\BSON\ObjectId
+
+* 'criado_em':
+  * Descrição: filtra a busca pela data ou hora de criação do registro
+  * Valor: string com a data e/ou hora
+
+* 'atualizado_em':
+  * Descrição: filtra a busca pela data ou hora de última atualização do registro
+  * Valor: string com a data e/ou hora
+
+#### [post] api/v1/cidade
+
+##### DESCRIÇÃO
+Cadastra uma cidade na base cidades
+
+##### BODY
+Exemplo:
+{
+	"nome" : "Niterói",
+	"id_estado": "5b2860b27a39a90cc63f79b2"
+}
+
+* 'nome':
+  * Descrição: Nome da cidade a ser cadastrada
+  * Valor: string com o nome da cidade
+
+* 'id_estado':
+  * Descrição: Identificador único do estado em que a cidade faz parte
+  * Valor: MongoDB\BSON\ObjectId
+
+#### [put] api/v1/cidade
+
+##### DESCRIÇÃO
+Altera uma cidade na base cidades
+
+##### BODY
+Exemplo:
+{
+	"id": "5b2860f67a39a90cc63f79b3",
+	"nome" : "rio de janeiro",
+	"id_estado": "5b2846fc7a39a973511b42b4"
+}
+
+* 'id':
+  * Descrição: Identificador único do registro a ser alterado na base cidades
+  * Valor: MongoDB\BSON\ObjectId
+
+* 'nome':
+  * Descrição: Novo nome da cidade
+  * Valor: string com o novo nome da cidade
+
+* 'id_estado':
+  * Descrição: Novo identificador único do estado eque a cidade faz parte
+  * Valor: MongoDB\BSON\ObjectId
+
+#### [delete] api/v1/cidade
+
+##### DESCRIÇÃO
+Exclui uma cidade na base cidades
+
+##### BODY
+Exemplo:
+{
+	"id": "5b28613b7a39a90cc63f79b4"
+}
+
+* 'id':
+  * Descrição: Identificador único do registro a ser excluído na base cidades
+  * Valor: MongoDB\BSON\ObjectId
