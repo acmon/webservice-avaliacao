@@ -8,11 +8,13 @@ class BaseModel {
 
 	protected $collection = '';
 	protected $dbCollection = '';
+	protected $identificadoresExternos = [];
 
 	function __construct($container)
 	{
 		$this->container = $container;
 		$this->collection = $this->definirCollection();
+		$this->identificadoresExternos = $this->definirIdentificadoresExternos();
 		$this->dbCollection = $this->settings['db']['name'].'.'.$this->collection;
 	}
 
@@ -26,6 +28,11 @@ class BaseModel {
 	public function definirCollection()
 	{
 		throw new Exception('Método obrigatório');
+	}
+
+	public function definirIdentificadoresExternos()
+	{
+		return [];
 	}
 
 	public function buscar($filtroRaw) 
@@ -47,7 +54,7 @@ class BaseModel {
 
 		} catch (\MongoDB\Driver\Exception\Exception $e) {
 			
-			throw new Exception($e);
+			throw new Exception($e->getMessage());
 
 		}
 	}
@@ -63,7 +70,7 @@ class BaseModel {
 		return $ordenacao;
 	}
 
-	private function montarFiltroBusca ($filtroRaw)
+	protected function montarFiltroBusca ($filtroRaw)
 	{
 		$filtro = [];
 
@@ -72,8 +79,15 @@ class BaseModel {
 			if($value[$key] !== '' && $key !== 'ordenacao') {
 
 				if ($key === "id") {
+				
+					$filtro['_'.$key] = new \MongoDB\BSON\ObjectId($value);
+				
+				} else if (in_array($key, $this->identificadoresExternos)) {
+
 					$filtro[$key] = new \MongoDB\BSON\ObjectId($value);
-				} else {
+
+				}else {
+
 					$filtro[$key] = new \MongoDB\BSON\Regex($value,'i');
 				}
 
@@ -92,15 +106,13 @@ class BaseModel {
 
 		} catch (\MongoDB\Driver\Exception\Exception $e) {
      		
-     		throw new Exception($e);
+     		throw new Exception($e->getMessage());
 
 		}
 	}
 
 	public function cadastrar($documento)
 	{
-		$this->validarCadastro($documento);
-
 		try {
 			$documento['criado_em'] = date("d/m/Y H:i:s");
 			$documento['atualizado_em'] = date("d/m/Y H:i:s");
@@ -115,19 +127,13 @@ class BaseModel {
 
 		} catch (\MongoDB\Driver\Exception\Exception $e) {
      		
-     		throw new Exception();
+     		throw new Exception($e->getMessage());
 
 		}
 	}
 
-	protected function validarCadastro($dados) {
-		throw new Exception('Método obrigatório não implementado');
-	}
-
 	public function alterar($id, $dados)
 	{
-		$this->validarAlteracao($dados);
-
 		try {
 			$filtro = ['_id' => new \MongoDB\BSON\ObjectId($id)];
 			$dados['atualizado_em'] = date("d/m/Y H:i:s");
@@ -142,13 +148,9 @@ class BaseModel {
 
 		} catch (\MongoDB\Driver\Exception\Exception $e) {
      		
-     		throw new Exception($e);
+     		throw new Exception($e->getMessage());
 
 		}
-	}
-
-	protected function validarAlteracao($dados) {
-		throw new Exception('Método obrigatório não implementado');
 	}
 
 	private function documentoParaLower($doc) {
@@ -181,7 +183,7 @@ class BaseModel {
 
 		} catch (\MongoDB\Driver\Exception\Exception $e) {
 
-			throw new Exception($e);
+			throw new Exception($e->getMessage());
 
 		}
 	}

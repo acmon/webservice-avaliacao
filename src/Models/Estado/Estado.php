@@ -20,6 +20,8 @@ class Estado extends BaseModel {
 
 		$documento = ['nome' => $nome, 'sigla' => $sigla];
 
+		$this->validarCadastro($documento);
+
 		$retorno = parent::cadastrar($documento);
 
 	    return $retorno;
@@ -31,7 +33,7 @@ class Estado extends BaseModel {
 		
 	}
 
-	protected function validarSigla($sigla) {
+	private function validarSigla($sigla) {
 		
 		if(strlen($sigla) > 2){
 			throw new Exception('A sigla informada possui mais que 2 caracteres');
@@ -44,9 +46,11 @@ class Estado extends BaseModel {
 		$nome = filter_var($dados['nome'], FILTER_SANITIZE_STRING);
 		$sigla = filter_var($dados['sigla'], FILTER_SANITIZE_STRING);
 		
-		$estado = ['nome' => $nome, 'sigla' => $sigla];
+		$documento = ['nome' => $nome, 'sigla' => $sigla];
 
-		$retorno = parent::alterar($dados['id'], $estado);
+		$this->validarAlteracao($documento);
+
+		$retorno = parent::alterar($dados['id'], $documento);
 
 		return $retorno;
 	}

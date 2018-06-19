@@ -16,9 +16,9 @@ $app->group('/api/v1', function(){
 	$this->group('/cidade', function() {
 
 		$this->get('', 'Src\http\Controllers\Cidade\Controller:index');
-		$this->post('', 'Src\http\Controllers\Cidade\Controller:store');
-		$this->put('', 'Src\http\Controllers\Cidade\Controller:update');
-		$this->delete('', 'Src\http\Controllers\Cidade\Controller:delete');
+		$this->post('', 'Src\http\Controllers\Cidade\Controller:store')->add(Src\http\Middleware\Cidade\CadastroMiddleware::class);
+		$this->put('', 'Src\http\Controllers\Cidade\Controller:update')->add(Src\http\Middleware\Cidade\AlteracaoMiddleware::class);
+		$this->delete('', 'Src\http\Controllers\Cidade\Controller:delete')->add(Src\http\Middleware\Cidade\ExclusaoMiddleware::class);
 
 	});
 

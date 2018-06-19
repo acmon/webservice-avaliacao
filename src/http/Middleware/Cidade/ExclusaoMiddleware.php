@@ -1,14 +1,14 @@
 <?php
 
-namespace Src\http\Middleware\Estado;
+namespace Src\http\Middleware\Cidade;
 
 class ExclusaoMiddleware {
 
 	public function __invoke($request, $response, $next)
 	{
-		$estado = $request->getParsedBody();
+		$cidade = $request->getParsedBody();
 		
-		if (!isset($estado['id']) || $estado['id'] === '') {
+		if (!isset($cidade['id']) || $cidade['id'] === '') {
 			return $response->withStatus(400)->write("Não foi possível realizar a operação."
 													."\nDetalhes: O id não foi informado");
 		}

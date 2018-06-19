@@ -1,21 +1,21 @@
 <?php
 
-namespace Src\http\Middleware\Estado;
+namespace Src\http\Middleware\Cidade;
 
-class CadastroMiddleware {
+class AlteracaoMiddleware {
 
 	public function __invoke($request, $response, $next)
 	{
-		$estado = $request->getParsedBody();
+		$cidade = $request->getParsedBody();
 		
-		if (!isset($estado['nome']) || $estado['nome'] === '') {
+		if (!isset($cidade['nome']) || $cidade['nome'] === '') {
 			return $response->withStatus(400)->write("Não foi possível realizar a operação."
 													."\nDetalhes: O nome não foi informado");
 		}
 
-		if (!isset($estado['sigla']) || $estado['sigla'] === '') {
+		if (!isset($cidade['id_estado']) || $cidade['id_estado'] === '') {
 			return $response->withStatus(400)->write("Não foi possível realizar a operação."
-													."\nDetalhes: A sigla não foi informado");
+													."\nDetalhes: O id do estado não foi informado");
 		}
 
 		$response = $next($request, $response);
